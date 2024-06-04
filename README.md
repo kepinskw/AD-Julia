@@ -1,2 +1,2 @@
 # AD-Julia
-Automatic differentation for simple RNN in Julia
+Automatic differentation package for simple RNN in Julia
