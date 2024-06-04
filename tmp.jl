@@ -255,7 +255,6 @@ let
     softmax = exp.(ŷ) ./ sum(exp.(ŷ); dims=1)
     softmax = clamp.(softmax, eps, 1.0 - eps)
     loss = -sum(y .* log.(softmax .+eps); dims=1) 
-    # print(mean(loss))
     return mean(loss)
 end
 backward(node::BroadcastedOperator{typeof(cross_entropy_loss)}, yhat, y, g) =
@@ -276,16 +275,11 @@ test_data = MLDatasets.MNIST(split=:test)
 
 using Random
 function loader(data; batchsize::Int=1, shuffle::Bool=true)
-    # Reshape the features
     x1dim = reshape(data.features, 28 * 28, :) # reshape 28×28 pixels into a vector of pixels
-    
-    # One-hot encode the targets
     yhot = onehotbatch(data.targets, 0:9) # make a 10×60000 one-hot matrix
     
-    # Combine features and targets
     dataset = (x1dim, yhot)
     
-    # Number of samples
     num_samples = size(x1dim, 2)
     
     # Create batches
@@ -438,8 +432,6 @@ function train(train_data,test_data, Wx, Wh, W, b1, b2)
             break
         end
         @info "Epoch: $epoch, Train Loss: $loss_train, Train Accuracy: $acc_train, Test Loss: $loss_test, Test Accuracy: $acc_test"
-        # println("Train Loss: $loss, Train Accuracy: $acc")
-        # @show loss, acc
     end
 end
 start_time = time()
