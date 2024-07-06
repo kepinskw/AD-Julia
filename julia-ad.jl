@@ -66,9 +66,9 @@ function topological_sort(head::GraphNode)
     return order
 end
 
-reset!(node::Constant) = nothing
-reset!(node::Variable) = node.gradient = nothing
-reset!(node::Operator) = node.gradient = nothing
+# reset!(node::Constant) = nothing
+# reset!(node::Variable) = node.gradient = nothing
+# reset!(node::Operator) = node.gradient = nothing
 
 function reset_gradients!(graph::Vector{GraphNode})
     for node in graph
@@ -85,7 +85,7 @@ compute!(node::Operator) =
 function forward!(order::Vector{GraphNode})
     for node in order
         compute!(node)
-        reset!(node)
+        # reset!(node)
     end
     return last(order).output
 end
